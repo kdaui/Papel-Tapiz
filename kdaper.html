@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Papel Tapiz</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0; /* Ensure no padding */
+            font-family: 'Arial', sans-serif;
+            background-color: #121212;
+            color: #ffffff;
+        }
+
+        header {
+            text-align: center;
+            padding: 20px;
+            background-color: #1e1e1e;
+        }
+
+        h1 {
+            margin: 0;
+        }
+
+        #gallery {
+            display: grid;
+            grid-gap: 0; /* Remove grid gap */
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            justify-items: stretch; /* Ensure items stretch to fill the grid */
+            padding: 0; /* Remove padding */
+            margin: 0; /* Remove margin */
+            width: 100%; /* Ensure it takes full width */
+        }
+
+        .wallpaper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%; /* Ensure each wallpaper container takes full height */
+            border: 0; /* Remove border */
+            border-radius: 0; /* Remove border radius */
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .wallpaper img {
+            display: block;
+            width: 100%; /* Ensure image covers the container */
+            height: 100%; /* Ensure image covers the container */
+            object-fit: contain; /* Ensure image is fully visible within the container */
+            transition: transform 0.3s ease;
+        }
+
+        .wallpaper:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Papel Tapiz</h1>
+    </header>
+    <main id="gallery">
+        <!-- Wallpapers will be loaded here dynamically -->
+    </main>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const gallery = document.getElementById('gallery');
+            const wallpapers = [];
+
+            // Generate wallpaper data dynamically
+            for (let i = 1; i <= 63; i++) {
+                wallpapers.push({
+                    url: `walls/${i}.png`,
+                    alt: `Wallpaper ${i}`
+                });
+            }
+
+            wallpapers.forEach(wallpaper => {
+                const wallpaperElement = document.createElement('div');
+                wallpaperElement.classList.add('wallpaper');
+
+                const img = document.createElement('img');
+                img.src = wallpaper.url;
+                img.alt = wallpaper.alt;
+
+                img.addEventListener('click', () => {
+                    downloadWallpaper(wallpaper.url);
+                });
+
+                wallpaperElement.appendChild(img);
+                gallery.appendChild(wallpaperElement);
+            });
+        });
+
+        function downloadWallpaper(url) {
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = url.substring(url.lastIndexOf('/') + 1);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    </script>
+</body>
+</html>
